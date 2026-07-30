@@ -17,6 +17,9 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-backend
   CUSTOM_TAG: ${{ inputs.tag || 'lifecycle-custom-20260730' }}
+  # Docker tags may contain text that Cargo does not accept as a SemVer
+  # package version. Keep the image tag readable but pass Cargo a valid one.
+  APP_VERSION: 0.0.0-lifecycle.20260730
 
 jobs:
   build:
@@ -58,4 +61,4 @@ jobs:
           provenance: mode=max
           build-args: |
             GIT_SHA=${{ github.sha }}
-            APP_VERSION=${{ env.CUSTOM_TAG }}
+            APP_VERSION=${{ env.APP_VERSION }}
