@@ -1,6 +1,9 @@
 name: Publish Custom Backend GHCR Image
 
 on:
+  push:
+    branches:
+      - custom/lifecycle-max-versions-image
   workflow_dispatch:
     inputs:
       tag:
@@ -13,6 +16,7 @@ permissions: {}
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-backend
+  CUSTOM_TAG: ${{ inputs.tag || 'lifecycle-custom-20260730' }}
 
 jobs:
   build:
@@ -39,7 +43,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ inputs.tag }}
+            type=raw,value=${{ env.CUSTOM_TAG }}
             type=sha
 
       - uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.0.0
@@ -54,4 +58,4 @@ jobs:
           provenance: mode=max
           build-args: |
             GIT_SHA=${{ github.sha }}
-            APP_VERSION=${{ inputs.tag }}
+            APP_VERSION=${{ env.CUSTOM_TAG }}
