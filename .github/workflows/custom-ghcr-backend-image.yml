@@ -3,23 +3,23 @@ name: Publish Custom Backend GHCR Image
 on:
   push:
     branches:
-      - custom/lifecycle-max-versions-image
+      - custom/lifecycle-upstream-main-image
   workflow_dispatch:
     inputs:
       tag:
         description: Public image tag
         required: true
-        default: lifecycle-custom
+        default: lifecycle-custom-20260731
 
 permissions: {}
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}-backend
-  CUSTOM_TAG: ${{ inputs.tag || 'lifecycle-custom-20260730' }}
+  CUSTOM_TAG: ${{ inputs.tag || 'lifecycle-custom-20260731' }}
   # Docker tags may contain text that Cargo does not accept as a SemVer
   # package version. Keep the image tag readable but pass Cargo a valid one.
-  APP_VERSION: 0.0.0-lifecycle.20260730
+  APP_VERSION: 0.0.0-lifecycle.20260731
 
 jobs:
   build:
